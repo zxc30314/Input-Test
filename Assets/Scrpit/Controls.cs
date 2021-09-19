@@ -225,17 +225,6 @@ public class @Controls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f159f470-ebc4-4a11-a4db-565b4a294a7a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Mouse0Down"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6b0db2ba-bb3d-4c84-8dac-d9afc48caf54"",
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
@@ -248,11 +237,22 @@ public class @Controls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""00fb5a26-3240-42a5-812b-5c5bf51251cb"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Mouse0DownPos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8fb6920b-436f-4257-8cff-12a62e428cfb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse0Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
