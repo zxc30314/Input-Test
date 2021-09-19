@@ -26,15 +26,27 @@ class InputAdaptor : MonoBehaviour
 
     private void Start()
     {
-        _controls.Touch.SecondaryTouchContact.started += _ => ZoomStart();
-        _controls.Touch.SecondaryTouchContact.canceled += _ => ZoomEnd();
+        _controls.Touch.SecondaryTouchContact.started += _ =>
+        {
+            if (_inputData.GetFristButton)
+            {
+                ZoomStart();
+            }
+        };
+        _controls.Touch.SecondaryTouchContact.canceled += _ =>
+        {
+            if (_inputData.GetFristButton)
+            {
+                ZoomEnd();
+            }
+        };
         _controls.Mouse.Whell.performed += _ => _inputData.Scroll = _.ReadValue<float>();
 
         _controls.Mouse.Mouse0Down.started += _ => _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
         _controls.Mouse.Mouse0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Mouse.Mouse0Delta.performed += _ => _inputData.Delta = _.ReadValue<Vector2>();
 
-        _controls.Touch.Touch0Down.started += _ => _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
+        _controls.Touch.Touch0Down.started += _ => Invoke(nameof(SetGetFirstButtonForOnUI),0.0001f);
         _controls.Touch.Touch0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Touch.Touch0Delta.performed += _ =>
         {
@@ -47,6 +59,11 @@ class InputAdaptor : MonoBehaviour
 
         _controls.Mouse.WheelDown.started += _ => _inputData.GetScrollButton = true;
         _controls.Mouse.WheelDown.canceled += _ => _inputData.GetScrollButton = false;
+    }
+
+    void SetGetFirstButtonForOnUI()
+    {
+        _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
     }
 
     public InputData GetData()
