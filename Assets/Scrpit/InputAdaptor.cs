@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Controls;
 
 class InputAdaptor : MonoBehaviour
@@ -28,12 +29,12 @@ class InputAdaptor : MonoBehaviour
         _controls.Touch.SecondaryTouchContact.started += _ => ZoomStart();
         _controls.Touch.SecondaryTouchContact.canceled += _ => ZoomEnd();
         _controls.Mouse.Whell.performed += _ => _inputData.Scroll = _.ReadValue<float>();
-        
-        _controls.Mouse.Mouse0Down.started += _ => _inputData.GetFristButton = true;
+
+        _controls.Mouse.Mouse0Down.started += _ => _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
         _controls.Mouse.Mouse0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Mouse.Mouse0Delta.performed += _ => _inputData.Delta = _.ReadValue<Vector2>();
-        
-        _controls.Touch.Touch0Down.started += _ => _inputData.GetFristButton = true;
+
+        _controls.Touch.Touch0Down.started += _ => _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
         _controls.Touch.Touch0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Touch.Touch0Delta.performed += _ =>
         {
@@ -46,9 +47,8 @@ class InputAdaptor : MonoBehaviour
 
         _controls.Mouse.WheelDown.started += _ => _inputData.GetScrollButton = true;
         _controls.Mouse.WheelDown.canceled += _ => _inputData.GetScrollButton = false;
-
     }
-    
+
     public InputData GetData()
     {
         return _inputData;
@@ -74,9 +74,9 @@ class InputAdaptor : MonoBehaviour
         {
             distance = Vector2.Distance(_controls.Touch.PrimaryFingerPosition.ReadValue<Vector2>(),
                 _controls.Touch.SecondaryFingerPosition.ReadValue<Vector2>());
-            
+
             _inputData.Scroll = (distance - previousDistance) * 0.001f;
-            
+
             previousDistance = distance;
             yield return null;
         }
