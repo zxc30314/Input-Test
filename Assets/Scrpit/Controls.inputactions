@@ -46,6 +46,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Touch0Touch",
+                    "type": "Value",
+                    "id": "26a7bc34-16bc-4dea-b7aa-984961379023",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "TouchCount",
                     "type": "Value",
                     "id": "d5f5bcad-957d-47bd-a7c1-05612f977b0e",
@@ -120,6 +128,17 @@
                     "action": "TouchCount",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19528b69-4e88-4db9-a09f-49dca3074786",
+                    "path": "<Touchscreen>/primaryTouch",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch0Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -148,6 +167,14 @@
                     "type": "Button",
                     "id": "020c1372-2274-4145-aa02-870251f31f62",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Mouse0DownPos",
+                    "type": "Value",
+                    "id": "0062d472-a7b3-488a-9776-1260c4a98c2a",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
@@ -202,6 +229,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "WheelDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00fb5a26-3240-42a5-812b-5c5bf51251cb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse0DownPos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

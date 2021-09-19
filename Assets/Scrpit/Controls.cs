@@ -59,6 +59,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Touch0Touch"",
+                    ""type"": ""Value"",
+                    ""id"": ""26a7bc34-16bc-4dea-b7aa-984961379023"",
+                    ""expectedControlType"": ""Touch"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""TouchCount"",
                     ""type"": ""Value"",
                     ""id"": ""d5f5bcad-957d-47bd-a7c1-05612f977b0e"",
@@ -133,6 +141,17 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""TouchCount"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19528b69-4e88-4db9-a09f-49dca3074786"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch0Touch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -161,6 +180,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""020c1372-2274-4145-aa02-870251f31f62"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mouse0DownPos"",
+                    ""type"": ""Value"",
+                    ""id"": ""0062d472-a7b3-488a-9776-1260c4a98c2a"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -217,6 +244,17 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""WheelDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00fb5a26-3240-42a5-812b-5c5bf51251cb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse0DownPos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -230,12 +268,14 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Touch_SecondaryTouchContact = m_Touch.FindAction("SecondaryTouchContact", throwIfNotFound: true);
         m_Touch_Touch0Delta = m_Touch.FindAction("Touch0Delta", throwIfNotFound: true);
         m_Touch_Touch0Down = m_Touch.FindAction("Touch0Down", throwIfNotFound: true);
+        m_Touch_Touch0Touch = m_Touch.FindAction("Touch0Touch", throwIfNotFound: true);
         m_Touch_TouchCount = m_Touch.FindAction("TouchCount", throwIfNotFound: true);
         // Mouse
         m_Mouse = asset.FindActionMap("Mouse", throwIfNotFound: true);
         m_Mouse_Whell = m_Mouse.FindAction("Whell", throwIfNotFound: true);
         m_Mouse_Mouse0Delta = m_Mouse.FindAction("Mouse0Delta", throwIfNotFound: true);
         m_Mouse_Mouse0Down = m_Mouse.FindAction("Mouse0Down", throwIfNotFound: true);
+        m_Mouse_Mouse0DownPos = m_Mouse.FindAction("Mouse0DownPos", throwIfNotFound: true);
         m_Mouse_WheelDown = m_Mouse.FindAction("WheelDown", throwIfNotFound: true);
     }
 
@@ -291,6 +331,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Touch_SecondaryTouchContact;
     private readonly InputAction m_Touch_Touch0Delta;
     private readonly InputAction m_Touch_Touch0Down;
+    private readonly InputAction m_Touch_Touch0Touch;
     private readonly InputAction m_Touch_TouchCount;
     public struct TouchActions
     {
@@ -301,6 +342,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @SecondaryTouchContact => m_Wrapper.m_Touch_SecondaryTouchContact;
         public InputAction @Touch0Delta => m_Wrapper.m_Touch_Touch0Delta;
         public InputAction @Touch0Down => m_Wrapper.m_Touch_Touch0Down;
+        public InputAction @Touch0Touch => m_Wrapper.m_Touch_Touch0Touch;
         public InputAction @TouchCount => m_Wrapper.m_Touch_TouchCount;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
@@ -326,6 +368,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Touch0Down.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Down;
                 @Touch0Down.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Down;
                 @Touch0Down.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Down;
+                @Touch0Touch.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Touch;
+                @Touch0Touch.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Touch;
+                @Touch0Touch.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch0Touch;
                 @TouchCount.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchCount;
                 @TouchCount.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchCount;
                 @TouchCount.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchCount;
@@ -348,6 +393,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Touch0Down.started += instance.OnTouch0Down;
                 @Touch0Down.performed += instance.OnTouch0Down;
                 @Touch0Down.canceled += instance.OnTouch0Down;
+                @Touch0Touch.started += instance.OnTouch0Touch;
+                @Touch0Touch.performed += instance.OnTouch0Touch;
+                @Touch0Touch.canceled += instance.OnTouch0Touch;
                 @TouchCount.started += instance.OnTouchCount;
                 @TouchCount.performed += instance.OnTouchCount;
                 @TouchCount.canceled += instance.OnTouchCount;
@@ -362,6 +410,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Mouse_Whell;
     private readonly InputAction m_Mouse_Mouse0Delta;
     private readonly InputAction m_Mouse_Mouse0Down;
+    private readonly InputAction m_Mouse_Mouse0DownPos;
     private readonly InputAction m_Mouse_WheelDown;
     public struct MouseActions
     {
@@ -370,6 +419,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Whell => m_Wrapper.m_Mouse_Whell;
         public InputAction @Mouse0Delta => m_Wrapper.m_Mouse_Mouse0Delta;
         public InputAction @Mouse0Down => m_Wrapper.m_Mouse_Mouse0Down;
+        public InputAction @Mouse0DownPos => m_Wrapper.m_Mouse_Mouse0DownPos;
         public InputAction @WheelDown => m_Wrapper.m_Mouse_WheelDown;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
         public void Enable() { Get().Enable(); }
@@ -389,6 +439,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Mouse0Down.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0Down;
                 @Mouse0Down.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0Down;
                 @Mouse0Down.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0Down;
+                @Mouse0DownPos.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0DownPos;
+                @Mouse0DownPos.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0DownPos;
+                @Mouse0DownPos.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouse0DownPos;
                 @WheelDown.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnWheelDown;
                 @WheelDown.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnWheelDown;
                 @WheelDown.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnWheelDown;
@@ -405,6 +458,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Mouse0Down.started += instance.OnMouse0Down;
                 @Mouse0Down.performed += instance.OnMouse0Down;
                 @Mouse0Down.canceled += instance.OnMouse0Down;
+                @Mouse0DownPos.started += instance.OnMouse0DownPos;
+                @Mouse0DownPos.performed += instance.OnMouse0DownPos;
+                @Mouse0DownPos.canceled += instance.OnMouse0DownPos;
                 @WheelDown.started += instance.OnWheelDown;
                 @WheelDown.performed += instance.OnWheelDown;
                 @WheelDown.canceled += instance.OnWheelDown;
@@ -419,6 +475,7 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnSecondaryTouchContact(InputAction.CallbackContext context);
         void OnTouch0Delta(InputAction.CallbackContext context);
         void OnTouch0Down(InputAction.CallbackContext context);
+        void OnTouch0Touch(InputAction.CallbackContext context);
         void OnTouchCount(InputAction.CallbackContext context);
     }
     public interface IMouseActions
@@ -426,6 +483,7 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnWhell(InputAction.CallbackContext context);
         void OnMouse0Delta(InputAction.CallbackContext context);
         void OnMouse0Down(InputAction.CallbackContext context);
+        void OnMouse0DownPos(InputAction.CallbackContext context);
         void OnWheelDown(InputAction.CallbackContext context);
     }
 }

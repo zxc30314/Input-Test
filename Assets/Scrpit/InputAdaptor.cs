@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.Controls;
+using System.Linq;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 class InputAdaptor : MonoBehaviour
 {
@@ -28,25 +30,32 @@ class InputAdaptor : MonoBehaviour
     {
         _controls.Touch.SecondaryTouchContact.started += _ =>
         {
-            if (_inputData.GetFristButton)
+            var pos0 = _controls.Touch.PrimaryFingerPosition.ReadValue<Vector2>();
+            var pos1 = _controls.Touch.SecondaryFingerPosition.ReadValue<Vector2>();
+
+            if (!IsPointerOverUIObject(pos0) && !IsPointerOverUIObject(pos1))
             {
                 ZoomStart();
             }
         };
         _controls.Touch.SecondaryTouchContact.canceled += _ =>
         {
-            if (_inputData.GetFristButton)
-            {
-                ZoomEnd();
-            }
+            ZoomEnd();
         };
         _controls.Mouse.Whell.performed += _ => _inputData.Scroll = _.ReadValue<float>();
 
-        _controls.Mouse.Mouse0Down.started += _ => _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
+        _controls.Mouse.Mouse0Down.started += _ =>
+        {
+            _inputData.GetFristButton = !IsPointerOverUIObject(_controls.Mouse.Mouse0DownPos.ReadValue<Vector2>());
+        };
         _controls.Mouse.Mouse0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Mouse.Mouse0Delta.performed += _ => _inputData.Delta = _.ReadValue<Vector2>();
 
-        _controls.Touch.Touch0Down.started += _ => Invoke(nameof(SetGetFirstButtonForOnUI),0.0001f);
+        _controls.Touch.Touch0Down.started += _ =>
+        {
+            _inputData.GetFristButton =
+                !IsPointerOverUIObject(_controls.Touch.Touch0Touch.ReadValue<UnityEngine.InputSystem.LowLevel.TouchState>().position);
+        };
         _controls.Touch.Touch0Down.canceled += _ => _inputData.GetFristButton = false;
         _controls.Touch.Touch0Delta.performed += _ =>
         {
@@ -59,11 +68,16 @@ class InputAdaptor : MonoBehaviour
 
         _controls.Mouse.WheelDown.started += _ => _inputData.GetScrollButton = true;
         _controls.Mouse.WheelDown.canceled += _ => _inputData.GetScrollButton = false;
+
     }
 
-    void SetGetFirstButtonForOnUI()
+    private bool IsPointerOverUIObject(Vector2 pos)
     {
-        _inputData.GetFristButton = !EventSystem.current.IsPointerOverGameObject();
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = pos;
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count(x => x.gameObject.layer == LayerMask.NameToLayer("UI")) > 0;
     }
 
     public InputData GetData()
@@ -78,7 +92,12 @@ class InputAdaptor : MonoBehaviour
 
     private void ZoomEnd()
     {
-        StopCoroutine(zoomCoroutine);
+        if (zoomCoroutine != null)
+        {
+            StopCoroutine(zoomCoroutine);
+            zoomCoroutine = null;
+        }
+
         _inputData.Scroll = 0;
     }
 

@@ -1,5 +1,8 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(InputAdaptor))]
 [AddComponentMenu("Camera-Control/3dsMax Camera Style")]
 public class CameraControll : MonoBehaviour
 {
@@ -25,6 +28,11 @@ public class CameraControll : MonoBehaviour
 
     private float xDeg;
     private float yDeg;
+
+    private void Reset()
+    {
+        _adaptor = GetComponent<InputAdaptor>();
+    }
 
     private void Start()
     {
